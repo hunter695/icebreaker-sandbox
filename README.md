@@ -45,8 +45,8 @@ Install babel-node:
 $yarn global add babel-cli
 ```
 The sample files are:
-- mongo_sample.js
-- twitter_sample.js
+- src/services/api/mongo_sample.js
+- src/services/api/twitter_sample.js
 
 Run sample files using:
 ```{r, engine='bash', count_lines}
