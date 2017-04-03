@@ -38,3 +38,17 @@ module.exports = {
 `yarn start`
 
 `http://localhost:8080`
+
+## Running sample files
+Install babel-node:
+```{r, engine='bash', count_lines}
+$yarn global add babel-cli
+```
+The sample files are:
+- mongo_sample.js
+- twitter_sample.js
+
+Run sample files using:
+```{r, engine='bash', count_lines}
+$babel-node --presets latest my_file.js
+```
