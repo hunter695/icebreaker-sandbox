@@ -1,26 +1,35 @@
 {
-  "name": "react-boilerplate",
+  "name": "icebreaker",
   "version": "1.0.0",
-  "description": "Boilerplate code for a react web app",
+  "description": "An app to generate pickup lines and icebreakers.",
   "main": "index.js",
-  "repository": "https://github.com/IgorGee/react-boilerplate.git",
+  "repository": "https://github.com/hunter695/icebreaker-app.git",
   "author": "Igor Goldvekht",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --watch webpack.config.babel.js --exec 'webpack-dev-server --env development'",
-    "build": "webpack --env production",
+    "start": "nodemon --watch ./config/webpack.config.babel.js --exec 'webpack-dev-server --config ./config/webpack.config.babel.js --env development'",
+    "build": "webpack ---config ./config/webpack.config.babel.js -env production",
     "lint:js": "eslint --ignore-path .gitignore --",
     "lint:css": "stylelint",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "precommit": "yarn lint-staged",
+    "prepush": "yarn test",
     "lint-staged": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
       "lint:js",
-      "lint:css",
-      "test"
+      "lint:css"
+    ]
+  },
+  "moduleRoots": [
+    "src"
+  ],
+  "jest": {
+    "moduleDirectories": [
+      "node_modules",
+      "src"
     ]
   },
   "devDependencies": {
@@ -31,13 +40,12 @@
     "babel-preset-latest": "^6.22.0",
     "babel-preset-react": "^6.23.0",
     "babel-preset-stage-0": "^6.22.0",
-    "chai": "^3.5.0",
-    "chai-as-promised": "^6.0.0",
     "css-loader": "^0.26.2",
-    "csv": "^1.1.1",
+    "csv-parse": "^1.2.0",
     "enzyme": "^2.7.1",
     "eslint": "^3.17.0",
     "eslint-config-airbnb": "^14.1.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
@@ -45,10 +53,11 @@
     "husky": "^0.13.2",
     "jest": "^19.0.2",
     "lint-staged": "^3.3.1",
-    "mocha": "^3.2.0",
     "nodemon": "^1.11.0",
     "react-addons-test-utils": "^15.4.2",
     "react-hot-loader": "next",
+    "react-router-dom": "^4.0.0",
+    "react-test-renderer": "^15.4.2",
     "style-loader": "^0.13.2",
     "stylelint": "^7.9.0",
     "stylelint-config-standard": "^16.0.0",
@@ -57,12 +66,11 @@
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
-    "express": "^4.15.2",
-    "mongodb": "^2.2.24",
+    "mongodb": "^2.2.25",
     "normalize.css": "^5.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
-    "react-router": "next",
+    "react-router": "^4.0.0",
     "styled-components": "^1.4.4",
     "twit": "^2.2.5"
   }

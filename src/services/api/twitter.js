@@ -19,7 +19,7 @@ module.exports = {
     let tweet
     let result
     const date = await daysAgo(daysBack)
-    console.log(date)
+    // console.log(date)
     const params = {
       q: `#${content} since:${date}`,
       lang: 'en',
@@ -28,7 +28,7 @@ module.exports = {
     }
     T.get('search/tweets', params, (twitterError, data, response) => {
       tweet = data.statuses
-      console.log(`TWITTER RESPONSE: ${response.statusCode}`)
+      // console.log(`TWITTER RESPONSE: ${response.statusCode}`)
       if (response.statusCode !== 200) {
         throw new Error('Unable to get a tweet.')
       }
@@ -51,7 +51,7 @@ module.exports = {
     const MongoClient = mongodb.MongoClient
     MongoClient.connect(mongodbURL, (mongodbError, db) => {
       if (mongodbError) {
-        throw new Error('Unable to connect, error: ', mongodbError)
+        throw new Error(`Unable to connect, error: ${mongodbError}`)
         // res.send(err); // from express
       } else {
         const collection = db.collection(collectionToInsert)

@@ -13,6 +13,9 @@ module.exports = {
    */
   sampleWildcard(db, callback) {
     return new Promise((resolve, reject) => {
+      if (!db) {
+        reject('Invalid database.')
+      }
       const cursor = db.collection('wildcard')
       .aggregate([{ $sample: { size: 1 } }])
       cursor.each((err, doc) => {
@@ -24,6 +27,12 @@ module.exports = {
         }
       })
     })
+  },
+  addLikes(db, col, id, amount) {
+    db.collection(col).update({ _id: id }, { $inc: { likes: amount } })
+  },
+  addDislikes(db, col, id, amount) {
+    db.collection(col).update({ _id: id }, { $inc: { dislikes: amount } })
   },
   /**
    * Parses csv file calling parse_file() and store into MongoDB
@@ -54,7 +63,8 @@ module.exports = {
                 text: row[i][0],
                 author: row[i][1],
                 likes: 0,
-                dislikes: 0 })
+                dislikes: 0,
+              })
             }
           }
           // store formated array of pickup lines into Mongo

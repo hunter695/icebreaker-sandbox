@@ -8,7 +8,7 @@ function sampleTwitter() {
   try {
     const daysBack = 5
     getWildcardFromTwitter('pickuplines', 1, daysBack, (result) => {
-      console.log(result)
+      console.log('FOUND TWEET: ', result)
     })
   } catch (err) {
     console.error(err)
@@ -23,7 +23,7 @@ function sampleMongoDB() {
         result = await sampleWildcard(db, () => {
           db.close()
         })
-        console.log(`RESULT TEXT: ${result.text}`)
+        console.log('FOUND MONGODB: ', result)
       } catch (findErr) {
         console.log(findErr)
       }

@@ -3,8 +3,8 @@ import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const PATHS = {
-  app: path.join(__dirname, 'src'),
-  build: path.join(__dirname, 'build'),
+  app: path.join(__dirname, '../src'),
+  build: path.join(__dirname, '../build'),
 }
 
 const commonConfig = {
@@ -48,6 +48,12 @@ const commonConfig = {
       template: path.join(PATHS.app, 'index.html'),
     }),
   ],
+  resolve: {
+    modules: [
+      path.join(__dirname, '../src'),
+      path.join(__dirname, '../node_modules'),
+    ],
+  },
 }
 
 const productionConfig = () => commonConfig
