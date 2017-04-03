@@ -3,7 +3,6 @@ import config from './config' // keys for twitter API
 import { daysAgo } from './utility'
 
 const twit = require('twit') // module for interacting with Twitter API
-const mongodb = require('mongodb')
 
 const T = twit(config.twitter)
 
@@ -29,40 +28,16 @@ module.exports = {
     T.get('search/tweets', params, (twitterError, data, response) => {
       tweet = data.statuses
       // console.log(`TWITTER RESPONSE: ${response.statusCode}`)
-      if (response.statusCode !== 200) {
-        throw new Error('Unable to get a tweet.')
-      }
-      result = {
-        text: tweet[0].text,
-        author: tweet[0].user.screen_name,
-        likes: 0,
-        dislikes: 0,
-      }
-      callback(result)
-    })
-  },
-  /**
-   * Stores tweets into MongoDB database 'wildcard'
-   * @param {Object[]} tweets Array of tweets in JSON
-   * @param {string} collectionToInsert MongoDB collection to store in.
-   */
-  store(tweet, collectionToInsert = 'curated') {
-    const mongodbURL = config.mongodb.url
-    const MongoClient = mongodb.MongoClient
-    MongoClient.connect(mongodbURL, (mongodbError, db) => {
-      if (mongodbError) {
-        throw new Error(`Unable to connect, error: ${mongodbError}`)
-        // res.send(err); // from express
+      if (response.statusCode !== 200 || (Array.isArray(tweet) && tweet.length === 0)) {
+        callback({})
       } else {
-        const collection = db.collection(collectionToInsert)
-        // console.log('DB connected successfully')
-        collection.insert(tweet, (insertError) => {
-          // console.log(`DB insert result: ${records.ops[0]._id}`)
-          if (insertError) {
-            throw new Error(`insert error: ${insertError}`)
-          }
-          db.close()
-        })
+        result = {
+          text: tweet[0].text,
+          author: tweet[0].user.screen_name,
+          likes: 0,
+          dislikes: 0,
+        }
+        callback(result)
       }
     })
   },
