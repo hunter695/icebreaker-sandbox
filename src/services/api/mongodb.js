@@ -45,12 +45,13 @@ module.exports = {
   },
   /**
    * Stores tweets into MongoDB database 'wildcard'
-   * @param {Object[]} tweets Array of tweets in JSON
-   * @param {string} collectionToInsert MongoDB collection to store in.
+   * @param {Object} db MongoDB database connection
+   * @param {col} collectionToInsert MongoDB collection to store in.
+   * @param {Object} content the tweet object to store
    */
-  store(db, col, tweet) {
+  store(db, col, content) {
     // console.log('DB connected successfully')
-    db.collection(col).insert(tweet, (insertError) => {
+    db.collection(col).insert(content, (insertError) => {
       // console.log(`DB insert result: ${records.ops[0]._id}`)
       if (insertError) {
         throw new Error(`insert error: ${insertError}`)
