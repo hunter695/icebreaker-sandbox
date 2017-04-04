@@ -28,7 +28,7 @@ function mongoDbWildcardSample() {
     mongodb.MongoClient.connect(config.mongodb.url, async (err, db) => {
       try {
         result = await sampleWildcard(db, 'test')
-        console.log('WILDCARD RANDOM SAMPLE: ', result)
+        console.log('WILDCARD RANDOM SAMPLE: \n', result)
       } catch (findErr) {
         console.error(findErr)
       } finally {
@@ -49,22 +49,22 @@ function likesDislikesSample() {
     } else {
       try {
         const id = await insertGarbage(db)
-        addLikes(db, 'test', id, 2, async () => {
-          try {
-            const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
-            console.log('Updated document: ', updatedDoc)
-          } catch (findErr) {
-            console.error(findErr)
-          }
-        })
-        addDislikes(db, 'test', id, 100, async () => {
-          try {
-            const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
-            console.log('Updated document: ', updatedDoc)
-          } catch (findErr) {
-            console.error(findErr)
-          }
-        })
+        const likesWriteResult = await addLikes(db, 'test', id, 2)
+        console.log('MongoDB write result: ', likesWriteResult.result)
+        try {
+          const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
+          console.log('Updated document: \n', updatedDoc)
+        } catch (findErr) {
+          console.error(findErr)
+        }
+        const dislikesWriteResult = await addDislikes(db, 'test', id, 100)
+        console.log('MongoDB write result: ', dislikesWriteResult.result)
+        try {
+          const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
+          console.log('Updated document: \n', updatedDoc)
+        } catch (findErr) {
+          console.error(findErr)
+        }
       } catch (updateErr) {
         console.error(updateErr)
       }
