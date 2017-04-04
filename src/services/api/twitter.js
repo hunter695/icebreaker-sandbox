@@ -29,7 +29,7 @@ module.exports = {
       tweet = data.statuses
       // console.log(`TWITTER RESPONSE: ${response.statusCode}`)
       if (response.statusCode !== 200 || (Array.isArray(tweet) && tweet.length === 0)) {
-        callback({})
+        callback(null)
       } else {
         result = {
           text: tweet[0].text,

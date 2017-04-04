@@ -2,21 +2,20 @@ module.exports = {
   /**
    * Randomly samples a document from 'wildcard' database.
    * @param {Object} db Database from MongoDB connection
-   * @param {requestCallback} callback Function used to process each document retrieved
+   * @param {requestCallback} callback function called upon not finding any documents.
    */
-  sampleWildcard(db, callback) {
+  sampleWildcard(db, col) {
     return new Promise((resolve, reject) => {
       if (!db) {
-        reject('Invalid database.')
+        reject('Invalid database')
       }
-      const cursor = db.collection('wildcard')
+      const cursor = db.collection(col)
       .aggregate([{ $sample: { size: 1 } }])
       cursor.each((err, doc) => {
         if (doc) {
           resolve(doc)
         } else {
-          callback()
-          reject('Unable to get a document.')
+          reject('Unable to retrieve document')
         }
       })
     })
@@ -29,8 +28,12 @@ module.exports = {
    * @param {Integer} amount of likes to increment
    */
   addLikes(db, col, id, amount, callback) {
-    db.collection(col).update({ _id: id }, { $inc: { likes: amount } })
-    callback()
+    if (!db) {
+      throw Error('ERROR: Invalid database.')
+    } else {
+      db.collection(col).update({ _id: id }, { $inc: { likes: amount } })
+      callback()
+    }
   },
   /**
    * Randomly samples a document from 'wildcard' database.
@@ -40,8 +43,12 @@ module.exports = {
    * @param {Integer} amount of likes to increment
    */
   addDislikes(db, col, id, amount, callback) {
-    db.collection(col).update({ _id: id }, { $inc: { dislikes: amount } })
-    callback()
+    if (!db) {
+      throw Error('ERROR: Invalid database.')
+    } else {
+      db.collection(col).update({ _id: id }, { $inc: { dislikes: amount } })
+      callback()
+    }
   },
   /**
    * Stores tweets into MongoDB database 'wildcard'
