@@ -1,4 +1,4 @@
-import { addLikes, addDislikes, store } from './mongodb'
+import { sampleWildcard, addLikes, addDislikes, store } from './mongodb'
 import config from './config' // keys for twitter API
 
 const mongodb = require('mongodb')
@@ -18,45 +18,68 @@ async function insertGarbage(db) {
   } catch (e) {
     throw Error(e)
   }
-  console.log('Inserted document: ', result.ops[0])
+  console.log('Inserted document: \n', result.ops[0])
   return result.insertedId
 }
 
-MongoClient.connect(mongodbURL, async (err, db) => {
-  if (!db) {
-    console.error('ERROR: please start your mongod service.')
-  } else {
-    try {
-      const id = await insertGarbage(db)
-      addLikes(db, 'test', id, 2, async () => {
-        try {
-          const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
-          console.log()
-          console.log('Updated document: ', updatedDoc)
-        } catch (findErr) {
-          console.error(findErr)
+function mongoDbWildcardSample() {
+  try {
+    let result
+    mongodb.MongoClient.connect(config.mongodb.url, async (err, db) => {
+      try {
+        result = await sampleWildcard(db, 'test')
+        console.log('WILDCARD RANDOM SAMPLE: ', result)
+      } catch (findErr) {
+        console.error(findErr)
+      } finally {
+        if (db !== null) {
+          db.close()
         }
-      })
-      addDislikes(db, 'test', id, 100, async () => {
-        try {
-          const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
-          console.log()
-          console.log('Updated document: ', updatedDoc)
-        } catch (findErr) {
-          console.error(findErr)
-        }
-      })
-    } catch (updateErr) {
-      console.error(updateErr)
-    }
-    // storing document
-    const content = {
-      text: 'asdsad',
-      author: '123',
-      likes: 1,
-      dislikes: 3,
-    }
-    store(db, 'test', content)
-    db.close()
+      }
+    })
+  } catch (err) {
+    console.error(err)
   }
-})
+}
+
+function likesDislikesSample() {
+  MongoClient.connect(mongodbURL, async (err, db) => {
+    if (!db) {
+      console.error('ERROR: please start your mongod service.')
+    } else {
+      try {
+        const id = await insertGarbage(db)
+        addLikes(db, 'test', id, 2, async () => {
+          try {
+            const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
+            console.log('Updated document: ', updatedDoc)
+          } catch (findErr) {
+            console.error(findErr)
+          }
+        })
+        addDislikes(db, 'test', id, 100, async () => {
+          try {
+            const updatedDoc = await db.collection('test').findOne({ _id: id }, {})
+            console.log('Updated document: ', updatedDoc)
+          } catch (findErr) {
+            console.error(findErr)
+          }
+        })
+      } catch (updateErr) {
+        console.error(updateErr)
+      }
+      // storing document
+      const content = {
+        text: 'asdsad',
+        author: '123',
+        likes: 1,
+        dislikes: 3,
+      }
+      store(db, 'test', content)
+      db.close()
+    }
+  })
+}
+
+likesDislikesSample()
+mongoDbWildcardSample()
