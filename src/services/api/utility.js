@@ -4,7 +4,7 @@ module.exports = {
    * @param {number} daysBack number of days back
    * @return {object} promise to resolve the date going back daysBack
    */
-  daysAgo(daysBack) {
+  getPastDate(daysBack) {
     return new Promise((resolve, reject) => {
       const today = new Date()
       const someDaysAgo = new Date(today.setDate(today.getDate() - daysBack))
