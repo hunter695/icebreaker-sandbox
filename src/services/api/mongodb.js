@@ -1,13 +1,13 @@
 module.exports = {
   /**
    * Randomly samples a document from 'wildcard' database.
-   * @param {Object} db Database from MongoDB connection
+   * @param {Object} db database from MongoDB connection
    * @param {String} col collection name of wildcard database
    */
   sampleWildcard(db, col) {
     return new Promise((resolve, reject) => {
       if (!db) {
-        reject('Invalid database')
+        reject('ERROR: invalid database!')
       }
       const cursor = db.collection(col)
       .aggregate([{ $sample: { size: 1 } }])
@@ -29,7 +29,7 @@ module.exports = {
    */
   addLikes(db, col, id, amount) {
     if (!db) {
-      throw Error('ERROR: Invalid database.')
+      throw Error('ERROR: invalid database!')
     } else {
       return db.collection(col).update({ _id: id }, { $inc: { likes: amount } })
     }
@@ -43,7 +43,7 @@ module.exports = {
    */
   addDislikes(db, col, id, amount) {
     if (!db) {
-      throw Error('ERROR: Invalid database.')
+      throw Error('ERROR: invalid database!')
     } else {
       return db.collection(col).update({ _id: id }, { $inc: { dislikes: amount } })
     }
@@ -51,17 +51,18 @@ module.exports = {
   /**
    * Stores tweets into MongoDB database col
    * @param {Object} db MongoDB database connection
-   * @param {col} collectionToInsert MongoDB collection to store in.
+   * @param {col} col MongoDB collection to store in.
    * @param {Object} content the object to store into MongoDB database.
    */
   store(db, col, content) {
-    // console.log('DB connected successfully')
-    db.collection(col).insert(content, (insertError) => {
-      // console.log(`DB insert result: ${records.ops[0]._id}`)
-      if (insertError) {
-        throw new Error(`insert error: ${insertError}`)
-      }
-      db.close()
-    })
+    if (!db) {
+      throw Error('ERROR: invalid database!')
+    } else {
+      db.collection(col).insert(content, (insertError) => {
+        if (insertError) {
+          throw new Error(`Insert error: ${insertError}`)
+        }
+      })
+    }
   },
 }

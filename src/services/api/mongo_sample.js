@@ -5,6 +5,8 @@ const mongodb = require('mongodb')
 const mongodbURL = config.mongodb.url
 const MongoClient = mongodb.MongoClient
 
+// This program uses collection 'test' in your MongoDB 'icebreaker' database.
+
 async function insertGarbage(db) {
   let result
   try {
@@ -48,6 +50,7 @@ function likesDislikesSample() {
       console.error('ERROR: please start your mongod service.')
     } else {
       try {
+        // try to insert garbage data and update its likes and dislikes
         const id = await insertGarbage(db)
         const likesWriteResult = await addLikes(db, 'test', id, 2)
         console.log('MongoDB write result: ', likesWriteResult.result)
@@ -68,7 +71,7 @@ function likesDislikesSample() {
       } catch (updateErr) {
         console.error(updateErr)
       }
-      // storing document
+      // store some document
       const content = {
         text: 'asdsad',
         author: '123',

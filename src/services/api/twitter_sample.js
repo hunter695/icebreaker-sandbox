@@ -3,7 +3,7 @@ import { getWildcardFromTwitter } from './twitter'
 function twitterWildcardSample() {
   try {
     const daysBack = 5
-    getWildcardFromTwitter('pickuplines', 1, daysBack, (result) => {
+    getWildcardFromTwitter('movies', 1, daysBack, (result) => {
       if (result) {
         console.log('FOUND TWEET: \n', result)
       } else {
