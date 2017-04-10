@@ -19,14 +19,14 @@ it('Stored document text should be retrieved.', () => {
       let cursor
       try {
         // find the inserted document by its returned ID.
-        cursor = await db.collection('test').findOne({_id: insertedId}, {})
-      } catch(findErr) {
+        cursor = await db.collection('test').findOne({ _id: insertedId }, {})
+      } catch (findErr) {
         expect(findErr).toBe(null)
       }
       const text = cursor.text
       expect(text).toBe('tasty meatloaf')
-      db.collection('test').remove({_id: insertedId})
-    } catch(storeErr) {
+      db.collection('test').remove({ _id: insertedId })
+    } catch (storeErr) {
       expect(storeErr).toBe(null)
     }
     db.close()
@@ -47,8 +47,8 @@ it('Randomly sampling collection should return non-null', () => {
       insertedId = await storeOne(db, 'test', content)
       const sample = await sampleWildcard(db, 'test', 1)
       expect(sample.text).toBeDefined()
-      db.collection('test').remove({_id: insertedId})
-    } catch(storeErr) {
+      db.collection('test').remove({ _id: insertedId })
+    } catch (storeErr) {
       expect(storeErr).toBe(null)
     }
     db.close()
