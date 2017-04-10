@@ -3,9 +3,16 @@ import config from '../config' // for Twitter API keys and MongoDB URL
 
 const mongodb = require('mongodb')
 
+it('Should be able to connect to MongoDB.', () => {
+  mongodb.MongoClient.connect(config.mongodb.url, async (connectErr, db) => {
+    expect(connectErr).toBeFalsy()
+    db.close()
+  })
+})
+
 it('Stored document text should be retrieved.', () => {
   mongodb.MongoClient.connect(config.mongodb.url, async (connectErr, db) => {
-    expect(connectErr).toBe(null)
+    expect(connectErr).toBeFalsy()
     let insertedId
     const content = {
       text: 'tasty meatloaf',
@@ -21,21 +28,21 @@ it('Stored document text should be retrieved.', () => {
         // find the inserted document by its returned ID.
         cursor = await db.collection('test').findOne({ _id: insertedId }, {})
       } catch (findErr) {
-        expect(findErr).toBe(null)
+        expect(findErr).toBeFalsy()
       }
       const text = cursor.text
       expect(text).toBe('tasty meatloaf')
       db.collection('test').remove({ _id: insertedId })
     } catch (storeErr) {
-      expect(storeErr).toBe(null)
+      expect(storeErr).toBeFalsy()
     }
     db.close()
   })
 })
 
-it('Randomly sampling collection should return non-null', () => {
+it('Randomly sampling collection should return truthy', () => {
   mongodb.MongoClient.connect(config.mongodb.url, async (connectErr, db) => {
-    expect(connectErr).toBe(null)
+    expect(connectErr).toBeFalsy()
     let insertedId
     const content = {
       text: 'tasty meatloaf',
@@ -49,7 +56,7 @@ it('Randomly sampling collection should return non-null', () => {
       expect(sample.text).toBeDefined()
       db.collection('test').remove({ _id: insertedId })
     } catch (storeErr) {
-      expect(storeErr).toBe(null)
+      expect(storeErr).toBeFalsy()
     }
     db.close()
   })
