@@ -3,5 +3,3 @@ build
 
 # ignore MongoDB and Twitter configurations
 config.js
-# ignore data
-csv/
