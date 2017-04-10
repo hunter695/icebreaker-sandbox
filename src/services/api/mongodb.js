@@ -62,9 +62,9 @@ module.exports = {
     if (!db) {
       throw Error('ERROR: invalid database!')
     } else {
-      try{
+      try {
         result = await db.collection(col).insertOne(content)
-      } catch(storeErr) {
+      } catch (storeErr) {
         throw Error(storeErr)
       }
       return result.insertedId
