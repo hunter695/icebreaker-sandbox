@@ -22,7 +22,7 @@ it('Stored document text should be retrieved.', async () => {
 
     const text = cursor.text
     expect(text).toBe('tasty meatloaf')
-    db.collection('test').remove({ _id: insertedId })
+    await db.collection('test').remove({ _id: insertedId })
   } finally {
     db.close()
   }
@@ -43,7 +43,7 @@ it('Randomly sampling collection should return a document', async () => {
     const insertedId = await storeObject(db, 'test', content)
     const sample = await sampleWildcard(db, 'test', 1)
     expect(sample.text).toBeTruthy()
-    db.collection('test').remove({ _id: insertedId })
+    await db.collection('test').remove({ _id: insertedId })
   } finally {
     db.close()
   }
@@ -62,7 +62,7 @@ it('storeContribution test', async () => {
     expect(cursor).toBeTruthy()
     const retrievedText = cursor.text
     expect(retrievedText).toBe('tasty meatloaf')
-    db.collection('test').remove({ _id: insertedId })
+    await db.collection('test').remove({ _id: insertedId })
   } finally {
     db.close()
   }
