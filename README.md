@@ -39,6 +39,22 @@ module.exports = {
 
 `http://localhost:8080`
 
+## Initialize Curated Database
+From the root of the project directory, do:
+```
+$ babel-node --presets latest src/csv/load.js
+```
+This will load curated CSV data into two MongoDB collections:
+`icebreaker_curated` and `pickupline_curated`.
+
+## Drop Curated Database
+From the root of the project directory, do:
+```
+$ babel-node --presets latest src/csv/drop.js
+```
+This will drop the two MongoDB collections:
+`icebreaker_curated` and `pickupline_curated`.
+
 ## Running sample files
 Install babel-node:
 ```{r, engine='bash', count_lines}
