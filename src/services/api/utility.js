@@ -1,6 +1,6 @@
 module.exports = {
   /**
-   * Stores tweets into MongoDB database 'wildcard'
+   * Get past date as a string.
    * @param {number} daysBack number of days back
    * @return {object} promise to resolve the date going back daysBack
    */
