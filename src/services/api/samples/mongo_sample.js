@@ -1,4 +1,4 @@
-import { sampleWildcard, addLikes, addDislikes, storeOne } from '../mongodb'
+import { sampleWildcard, addLikes, addDislikes, storeObject } from '../mongodb'
 import config from '../config' // keys for twitter API
 
 const mongodb = require('mongodb')
@@ -78,7 +78,7 @@ function likesDislikesSample() {
         likes: 1,
         dislikes: 3,
       }
-      storeOne(db, 'test', content)
+      storeObject(db, 'test', content)
       db.close()
     }
   })
