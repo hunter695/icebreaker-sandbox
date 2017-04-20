@@ -68,7 +68,7 @@ it('storeContribution test', async () => {
   }
 })
 
-it('addLikes test', async () => {
+it('adjustLikes and adjustDislikes test', async () => {
   const db = await mongodb.MongoClient.connect(config.mongodb.url)
   try {
     expect(db).toBeTruthy()
@@ -79,37 +79,14 @@ it('addLikes test', async () => {
       likes: 2,
       dislikes: 123,
     }
-    // insert and find document
+    // insert and find document with insertedId
     const insertedId = await storeObject(db, 'test', content)
     await addLikes(db, 'test', insertedId, 3)
+    await addDislikes(db, 'test', insertedId, 10)
     const cursor = await db.collection('test').findOne({ _id: insertedId }, {})
-    // retrieve updated likes
-    const retrievedLike = cursor.likes
-    expect(retrievedLike).toBe(5)
-    await db.collection('test').remove({ _id: insertedId })
-  } finally {
-    db.close()
-  }
-})
-
-it('addDislikes test', async () => {
-  const db = await mongodb.MongoClient.connect(config.mongodb.url)
-  try {
-    expect(db).toBeTruthy()
-
-    const content = {
-      text: 'tasty meatloaf',
-      author: 'Gordon Ramsay',
-      likes: 2,
-      dislikes: 123,
-    }
-    // insert and find document
-    const insertedId = await storeObject(db, 'test', content)
-    await addDislikes(db, 'test', insertedId, 3)
-    const cursor = await db.collection('test').findOne({ _id: insertedId }, {})
-    // retrieve updated dislikes
-    const retrievedLike = cursor.dislikes
-    expect(retrievedLike).toBe(126)
+    // retrieve updated likes and dislikes
+    expect(cursor.likes).toBe(5)
+    expect(cursor.dislikes).toBe(133)
     await db.collection('test').remove({ _id: insertedId })
   } finally {
     db.close()
